@@ -1,0 +1,3 @@
+CollectSources(${CMAKE_CURRENT_SOURCE_DIR} MODULE_SOURCE_FILES)
+
+add_library(LXEB_SystemComponents SHARED ${MODULE_SOURCE_FILES})
