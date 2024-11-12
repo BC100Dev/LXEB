@@ -22,4 +22,5 @@ foreach (APP_INCL_SourceInfo_PRIV_FILE ${APP_INCL_SourceInfo_PRIV_LOOKUP})
     endif ()
 endforeach ()
 
+set(MODULE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Installer")
 include("${CMAKE_CURRENT_SOURCE_DIR}/Installer/SourceInfo.cmake")

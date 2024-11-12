@@ -11,13 +11,6 @@ function(CollectSources RootDir OutVar)
     )
 
     file(GLOB_RECURSE ALL_FILES ${SEARCH_PATTERNS})
-    set(SOURCES "")
 
-    foreach (FILE ${ALL_FILES})
-        if (NOT FILE MATCHES "${CMAKE_SOURCE_DIR}/build" AND NOT FILE MATCHES "${CMAKE_BINARY_DIR}")
-            list(APPEND SOURCES ${FILE})
-        endif ()
-    endforeach ()
-
-    set(${OutVar} ${SOURCES} PARENT_SCOPE)
+    set(${OutVar} ${ALL_FILES} PARENT_SCOPE)
 endfunction()
