@@ -1,4 +1,7 @@
+#include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/vt.h>
 #include <sys/stat.h>
 
 #include <iostream>
@@ -26,25 +29,42 @@ bool hasSetuid() {
 }
 
 int main(int argc, char** argv) {
-    unsigned int uid = getuid();
-
-    if (uid != 0) {
-        if (!hasSetuid()) {
-            std::cerr << "LXEB_Client(Error): Requires root to operate; no SetUID permissions" << std::endl;
-            return 1;
-        }
-
-        if (setuid(0)) {
-            std::cerr << "LXEB_Client(Error): Requires root to operate; SetUID failed" << std::endl;
-            return 1;
-        }
-    }
-
-    uid = getuid();
-    if (uid != 0) {
-        std::cerr << "LXEB_Client(Error): SetUID successful and failed; should have 0, reported " << uid << std::endl;
+    if (argc == 1) {
+        std::cerr << "usage: " << argv[0] << " [unlock|lock]" << std::endl;
         return 1;
     }
 
-    // proceed forward with initializing everything
+    int fd = open("/dev/tty0", O_RDWR);
+    if (fd < 0) {
+        std::cerr << "/dev/tty0 open failed, error " << errno << std::endl;
+        return 1;
+    }
+
+    struct vt_stat vts{};
+    if (ioctl(fd, VT_GETSTATE, &vts) == -1) {
+        std::cerr << "ioctl failed, error " << errno << std::endl;
+        close(fd);
+
+        return 1;
+    }
+
+    std::cout << "Current active VT: /dev/tty" << vts.v_active << std::endl;
+
+    std::string arg = argv[1];
+    unsigned long req;
+    if (arg == "lock")
+        req = VT_LOCKSWITCH;
+    else if (arg == "unlock")
+        req = VT_UNLOCKSWITCH;
+    else {
+        std::cerr << "unknown action " << arg << std::endl;
+        close(fd);
+        return 1;
+    }
+
+    bool success = ioctl(fd, req, 1) != -1;
+    std::cout << (success ? "VT switch success" : "VT switch failed") << std::endl;
+
+    close(fd);
+    return 0;
 }
