@@ -1,10 +1,25 @@
 # LXEB
-LXEB stands for "Linux Exam Browser" and is a rewrite of SEB (Safe Exam Browser) for Linux.
-However, instead of rewriting it in C# that SEB is also written in (and open source), I
-decided to take over and rewrite it in C++ and Qt6, while also using Linux-native
-components. In basic words, it is a cohesive rewrite of SEB that should bring the
-functionality to Linux, no matter what desktop environment and what window manager you
-use.
+LXEB stands for "LinuX Exam Browser" and is a rewrite of the well-known SEB, short for
+"Safe Exam Browser". I decided to take it up a notch and rewrite it in C++ with Qt6
+instead. Considering that SEB is also 
+[open-source](https://github.com/SafeExamBrowser/seb-win-refactoring), I will be taking
+major source code from there and get AI (specifically Claude) to help me rewrite the
+necessary C# parts into C++. No I'm not going to vibe-code the hell out of LXEB because
+knowing AI and the current technology, along with the risks of it writing Security
+modules, it is well known to write exploitable code. I will be taking double looks.
+Maybe even triple looks, just to be safe.
+
+LXEB will also deliver the ability to put other Exam Browsing Providers through the APIs,
+which means that the native tools that allows the Lockdown on Linux-based Desktop systems.
+Integration through the APIs should be a seamless way of porting existing and newer ones
+into LXEB itself. The application itself will take care of registering things properly,
+along with the needed protocols and such. Yes, SEB has the URL protocol of `sebs://`. I
+know it because my school uses Moodle and with exams that require SEB, the URL does say
+with that protocol.
+
+For easy maintenance, I will be putting the external parts of both of the codebases
+(SEB for Windows, SEB Server) into the `External` path (referenced as Git submodules),
+making my C# exploration a bit easier... and somewhat shittier because hello CLion 😂
 
 Documentation will follow, once I get the codebase stable enough, and when things will
 reach a stable way of compiling.
@@ -15,26 +30,35 @@ it is currently nowhere of actually getting a browser running. The best thing I 
 really do is try to integrate a WebView renderer, but that's it, really. I also cannot
 promise any timelines, considering that my primary focuses are
 [OsintgramCXX](https://github.com/BC100Dev/OsintgramCXX) and
-[AnlinxOS](https://github.com/BC100Dev/AnlinxOS).
+[AnlinxOS](https://github.com/BC100Dev/AnlinxOS). My primary focus, as of now, is on my
+final exams, which also delays things further, considering that I am still an apprentice.
+If I had to estimate a rough release date, it would be somewhere in 2027 and 2028. And
+yes, I can confirm that once I am finished with this whole apprenticeship thing, I will
+switch focus and finally start making proper progress on LXEB. This means that the wait
+is slowly getting to a stop because from September or so, I will be grinding hard on this
+native port.
 
 ## Why Rewrite
-Originally, with how Linux's market share is still low and developers behind SEB refusing
-to make a port for Linux, along with schools forcing the use of Windows or macOS for SEB
-usage, Linux users are either forced to use school computers or have to use workarounds.
-To combat this, I decided to make LXEB itself and make it work with the structure of SEB
-itself… especially that my own school uses Moodle, and Moodle supports SEB, so I'm
-integrating SEB support right into the main codebase of this project.
+Considering that the developers behind SEB do not have any plans to develop a port for
+Linux desktops, I decided to make a native port for Linux. This will allow schools to
+finally remove the enforcement on Windows or macOS, just to get Safe Exam Browser running.
+Linux users would usually have to use a school computer or have to use workarounds, just
+to get SEB working. Considering that my school also uses Moodle, I'm integrating SEB
+support right into the main codebase of this project.
 
-## Redesign choices
-Originally, LXEB was designed to be only compatible with SEB. However, considering that
-there are other lockdown browsers (like the Respondus LockDown Browser), I decided to
-try and de-glue the code that I had before (even if there was little) and allow the
-modularity for other Browser protocols. No, this still does not mean for anyone in trying
-to mod them up, I will include Security protocols that developers can use for self-checks.
+Oh, and I know that the Linux Desktop Market share is still low, but considering that
+I'm a part of that Linux Desktop Userbase, I do like to use Safe Exam Browser on my
+machine. Yes, I tried using `wine`. It whined even harder.
 
-Also, since yall really hope that I finish this project (24 stars, 1 fork and 4 people are
-watching, gawh-damn Google AI search, wtf did you do :skull:), I will try to get some
-proper progress finally starting up. No promises though... 2069 :neutral_face:
+## Work & Redesign Choices
+Originally, LXEB was designed to be SEB-only compatible. However, considering that there
+are other lockdown browsers, like the Respondus Lockdown Browser, I decided to try and
+make the ability of making exam-based browser runnable for Linux by integrating the
+APIs. This basically means that if developers behind Respondus or other exam-based
+browsers want to expand for Linux, the LXEB APIs are the best for the call. No, this
+still does not mean that anyone trying to mod it up because it will still include
+Security Protocols. I see you, the people that love to reverse-engineer programs and
+possibly exploit it.
 
 ## Codebase components
 Instead of trying to fit up all SEB components into one single codebase, I decided to

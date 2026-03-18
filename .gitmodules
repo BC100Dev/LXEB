@@ -1,0 +1,6 @@
+[submodule "External/SEB_WinPort"]
+	path = External/SEB_WinPort
+	url = https://github.com/SafeExamBrowser/seb-win-refactoring
+[submodule "External/SEB_Server"]
+	path = External/SEB_Server
+	url = https://github.com/SafeExamBrowser/seb-server
