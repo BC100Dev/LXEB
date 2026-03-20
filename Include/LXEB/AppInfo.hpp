@@ -1,0 +1,9 @@
+#ifndef LXEB_APPINFO_HPP
+#define LXEB_APPINFO_HPP
+
+#define LXEB_APP_VERSION_STRING "0.0.1"
+#define LXEB_APP_VERSION_NUM 1
+
+#define LXEB_APP_NAME "LXEB"
+
+#endif //LXEB_APPINFO_HPP

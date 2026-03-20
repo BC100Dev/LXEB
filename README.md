@@ -24,6 +24,17 @@ making my C# exploration a bit easier... and somewhat shittier because hello CLi
 Documentation will follow, once I get the codebase stable enough, and when things will
 reach a stable way of compiling.
 
+**WARNING**: If you try to run LXEB as-is, you will get locked out. The tests of locking
+people out in VT10 (aka. performing Ctrl+Alt+F10) has been achieved. Since there is
+nothing to render in that compositor, you will get locked out due to lack of
+functionality. As a last resort, I wrote a few lines that allows SysRq executions. This
+means to free yourself, you will have to perform the REISUB (Raw, tErminate, kIll, Sync,
+Unmount, reBoot) using Alt + SysReq key combinations. Each letter has to be typed out
+individually. This means that you have to press Alt+SysRq+R and so on. Until I get
+something properly rendered, I will deal with the rest, so that you no longer get
+forcefully locked in. For now, I am declaring this as a temporary warning, until the
+window rendering part is finished.
+
 **WIP**: Please note that LXEB is still a work in progress, so there won't be any current
 usage / documentation on how to compile or how to get it running, considering the fact that
 it is currently nowhere of actually getting a browser running. The best thing I could
@@ -68,5 +79,5 @@ split them up into these specific ones:
   main control for all the other components
 - **[LXEB_API](Sources/LXEB_API)**: The API that components like SEB and other Secure
   Browser Providers can adapt upon
-- **[Safe Exam Browser Integration](Sources/LXEB_SafeExamBrowserModule)**: Integration of
+- **[Safe Exam Browser Integration](Sources/SEB_Integration)**: Integration of
   SEB itself into LXEB, using the LXEB APIs

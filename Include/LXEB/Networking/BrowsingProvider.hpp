@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <string>
+#include <optional>
 
 namespace LXEB::API {
 
@@ -14,7 +15,7 @@ namespace LXEB::API {
         std::string expectedHashValue;
         int providerVersionIdentifier;
         int lxebMinVersion;
-        int lxebMaxVersion;
+        std::optional<int> lxebMaxVersion;
     };
 
     enum class SignatureVerificationStatus {
