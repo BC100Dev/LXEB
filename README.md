@@ -27,12 +27,15 @@ making my C# exploration a bit easier... and somewhat shittier because hello CLi
 Considering my recent movements into closed-source development, I am temporarily
 archiving this project. It is mainly to refocus and switch the active priorities, as
 managing a thousand projects gets tiring. I already got OsintgramCXX over here, along
-with AnlinxOS, tDEX, OpenMDJ, VPN Profile Manager and many others too. Right now, I will
-be focusing on developing [novihook.net](https://novihook.net) (don't worry about the
-certificates, I will deal with them on the public release, considering that Plesk decided
-to bitch around with their own certificates. Damn 💀). Novihook will end up being a
-better Webhook service. This shared notice will be put on all the relevant / active repos
-that I deem to be in the priorities.
+with AnlinxOS, tDEX, OpenMDJ, VPN Profile Manager and many others too. Another reason is
+to slow the hype down because I strongly believe that I may or may not have overhyped my
+own projects that I have listed. This also includes another dead project of mine, 
+[aboawt](https://github.com/BC100Dev/aboawt). Anyway, right now, I will be focusing on
+developing [novihook.net](https://novihook.net) (don't worry about the certificates, I
+will deal with them on the public release, considering that Plesk decided to bitch around
+with their own certificates. Damn 💀). Novihook will end up being a better Webhook
+service. This shared notice will be put on all the relevant / active repos that I deem
+to be in the priorities.
 
 Not all hope is lost. Once I get Novihook finished, along with another desktop app into
 commercial use (in an attempt to make some money), I will unarchive these repos. However,
