@@ -14,6 +14,7 @@
 #include <QList>
 #include <QObject>
 #include <QWindow>
+#include <QWebEngineView>
 
 class LXEBCompositorWindow;
 
@@ -21,42 +22,43 @@ class LXEBView : public QWaylandView {
     Q_OBJECT
 
 public:
-    explicit LXEBView(QWaylandSurface *surface, QObject *parent = nullptr);
+    explicit LXEBView(QWaylandSurface* surface, QObject* parent = nullptr);
     ~LXEBView() override = default;
 
-    signals:
-        void surfaceDestroyed();
+signals:
+    void surfaceDestroyed();
 };
 
 class LXEBCompositor : public QWaylandCompositor {
     Q_OBJECT
 
 public:
-    explicit LXEBCompositor(QObject *parent = nullptr);
+    explicit LXEBCompositor(QObject* parent = nullptr);
     ~LXEBCompositor() override;
 
     void initialize();
 
-    const QList<LXEBCompositorWindow *> &outputWindows() const { return m_outputWindows; }
-    const QList<LXEBView *>             &views()         const { return m_views; }
+    const QList<LXEBCompositorWindow*>& outputWindows() const { return m_outputWindows; }
+    const QList<LXEBView*>& views() const { return m_views; }
 
-    signals:
-        void surfaceMapped(LXEBView *view);
-    void surfaceUnmapped(LXEBView *view);
+signals:
+    void surfaceMapped(LXEBView* view);
+    void surfaceUnmapped(LXEBView* view);
 
 private slots:
-    void onSurfaceCreated(QWaylandSurface *surface);
-    void onXdgToplevelCreated(QWaylandXdgToplevel *toplevel, QWaylandXdgSurface *xdgSurface);
-    void createOutput(QScreen *screen);
-    void removeOutput(QScreen *screen);
+    void onSurfaceCreated(QWaylandSurface* surface);
+    void onXdgToplevelCreated(QWaylandXdgToplevel* toplevel, QWaylandXdgSurface* xdgSurface);
+    void createOutput(QScreen* screen);
+    void removeOutput(QScreen* screen);
 
 private:
-    LXEBView *viewForSurface(QWaylandSurface *surface) const;
+    LXEBView* viewForSurface(QWaylandSurface* surface) const;
 
-    QWaylandXdgShell              *m_xdgShell     = nullptr;
-    QList<LXEBCompositorWindow *>  m_outputWindows;
-    QList<QWaylandOutput *>        m_outputs;
-    QList<LXEBView *>              m_views;
+    QWaylandXdgShell* m_xdgShell = nullptr;
+    QList<LXEBCompositorWindow*> m_outputWindows;
+    QList<QWaylandOutput*> m_outputs;
+    QList<LXEBView*> m_views;
+    QWebEngineView* m_browser = nullptr;
 };
 
 #endif //LXEB_LX_COMPOSITOR_HPP

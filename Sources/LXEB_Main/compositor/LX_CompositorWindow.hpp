@@ -5,8 +5,9 @@
 #include <QScreen>
 #include <QExposeEvent>
 #include <QResizeEvent>
-#include <QBackingStore>
-#include <QPainter>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
+#include <QtWaylandCompositor/QWaylandBufferRef>
 
 class LXEBCompositor;
 
@@ -17,7 +18,7 @@ public:
     explicit LXEBCompositorWindow(LXEBCompositor* compositor, QScreen* screen, QWindow* parent = nullptr);
     ~LXEBCompositorWindow() override = default;
 
-    void render() const;
+    void render();
 
 signals:
     void windowReady();
@@ -26,12 +27,12 @@ signals:
 protected:
     void exposeEvent(QExposeEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
-    void closeEvent(QCloseEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     LXEBCompositor* m_compositor = nullptr;
-    QBackingStore* m_backingStore = nullptr;
+    QOpenGLContext* m_glContext = nullptr;
 };
 
 #endif //LXEB_LX_COMPOSITORWINDOW_HPP

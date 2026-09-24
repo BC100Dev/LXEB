@@ -26,34 +26,37 @@ void LXEBCompositor::initialize() {
     connect(this, &QWaylandCompositor::surfaceCreated,
             this, &LXEBCompositor::onSurfaceCreated);
 
-    for (QScreen *screen : QGuiApplication::screens())
+    for (QScreen* screen : QGuiApplication::screens())
         createOutput(screen);
 
-    connect(static_cast<QGuiApplication *>(qApp),
+    connect(static_cast<QGuiApplication*>(qApp),
             &QGuiApplication::screenAdded,
             this,
-            [this](QScreen *screen) { createOutput(screen); });
+            [this](QScreen* screen) { createOutput(screen); });
 
-    connect(static_cast<QGuiApplication *>(qApp),
+    connect(static_cast<QGuiApplication*>(qApp),
             &QGuiApplication::screenRemoved,
             this,
-            [this](QScreen *screen) { removeOutput(screen); });
+            [this](QScreen* screen) { removeOutput(screen); });
 
     QWaylandCompositor::create();
 
     qDebug() << "[LXEB Compositor] Online —"
         << socketName()
         << "— outputs:" << m_outputWindows.size();
+
+    m_browser = new QWebEngineView();
+    m_browser->showFullScreen();
+    m_browser->load(QUrl("about:blank"));
 }
 
-void LXEBCompositor::createOutput(QScreen *screen)
-{
-    auto *window = new LXEBCompositorWindow(this, screen);
+void LXEBCompositor::createOutput(QScreen* screen) {
+    auto* window = new LXEBCompositorWindow(this, screen);
     window->setTitle(QStringLiteral("LXEB — %1").arg(screen->name()));
     window->setGeometry(screen->geometry());
     window->setVisibility(QWindow::FullScreen);
 
-    auto *output = new QWaylandOutput(this, window);
+    auto* output = new QWaylandOutput(this, window);
     output->setSizeFollowsWindow(true);
     output->setPosition(screen->geometry().topLeft());
 

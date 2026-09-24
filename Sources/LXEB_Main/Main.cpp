@@ -1,6 +1,6 @@
 #include "compositor/LX_Compositor.hpp"
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -13,9 +13,7 @@ static int g_originalVT = -1;
 
 static std::atomic<bool> g_mainShutDown{false};
 
-static void signalHandler(int signal) {
-    Q_UNUSED(signal)
-
+static void signalHandler(int) {
     if (g_mainShutDown.exchange(true)) {
         std::cerr << "you done fucked up now" << std::endl;
         _exit(1);
@@ -68,10 +66,18 @@ int main(int argc, char** argv) {
     qputenv("QT_QPA_PLATFORM", "eglfs");
     qputenv("QT_WAYLAND_CLIENT_BUFFER_INTEGRATION", "linux-dmabuf-unstable-v1");
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
+    qputenv("WAYLAND_DISPLAY", "wayland-lxeb");
+    qputenv("QT_QPA_PLATFORM", "wayland");
 
     LXEBCompositor compositor;
     compositor.initialize();
 
-    return QGuiApplication::exec();
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, [] {
+        LXEB::Lockdown::SwitchVTLock(LXEB::Lockdown::UNLOCK);
+        if (g_originalVT != -1)
+            LXEB::Lockdown::SwitchToVT(g_originalVT);
+    });
+
+    return QApplication::exec();
 }

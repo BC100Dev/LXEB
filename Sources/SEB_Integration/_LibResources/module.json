@@ -1,0 +1,11 @@
+{
+    "id": "4bc78c94-21be-41cb-9773-c3798803cab1",
+    "name": "SEB",
+    "display_name": "Safe Exam Browser",
+    "description": "Safe Exam Browser integration / port to Linux via LXEB",
+    "lib": {
+        "entry": "libSEB.so",
+        "symbol_start": "lxeb_module_start",
+        "symbol_exit": "lxeb_module_stop"
+    }
+}

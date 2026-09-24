@@ -15,6 +15,14 @@ function(CollectSources RootDir OutVar)
     set(${OutVar} ${ALL_FILES} PARENT_SCOPE)
 endfunction()
 
+function(DisableBionicFortify TARGET_NAME)
+    if (NOT APP_TARGETS_ANDROID)
+        return()
+    endif ()
+
+    target_link_options(${TARGET_NAME} PRIVATE "-Wl,--allow-shlib-undefined")
+endfunction()
+
 function(SetTargetOutputDir TARGET DIR)
     set_target_properties(${TARGET} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${DIR}"

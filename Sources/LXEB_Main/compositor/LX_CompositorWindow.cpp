@@ -1,29 +1,53 @@
 #include "LX_CompositorWindow.hpp"
 #include "LX_Compositor.hpp"
 
+#include <QtWaylandCompositor/QWaylandSurface>
+#include <QtWaylandCompositor/QWaylandBufferRef>
+#include <QOpenGLFunctions>
+#include <QOpenGLTexture>
+#include <QDebug>
+
 LXEBCompositorWindow::LXEBCompositorWindow(LXEBCompositor* compositor, QScreen* screen, QWindow* parent)
     : QWindow(parent)
       , m_compositor(compositor) {
     setScreen(screen);
     setFlags(Qt::Window | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint);
-    setSurfaceType(QWindow::RasterSurface);
+    setSurfaceType(QWindow::OpenGLSurface);
 
-    m_backingStore = new QBackingStore(this);
+    m_glContext = new QOpenGLContext(this);
+    m_glContext->setFormat(requestedFormat());
+    m_glContext->create();
 }
 
-void LXEBCompositorWindow::render() const {
-    if (!isExposed())
+void LXEBCompositorWindow::render() {
+    if (!isExposed() || !m_glContext)
         return;
 
-    QRect rect(0, 0, width(), height());
-    m_backingStore->beginPaint(rect);
+    m_glContext->makeCurrent(this);
+    QOpenGLFunctions* gl = m_glContext->functions();
 
-    QPainter painter(m_backingStore->paintDevice());
-    painter.fillRect(rect, QColor("#1a1a2e"));
-    painter.end();
+    gl->glViewport(0, 0, width(), height());
+    gl->glClearColor(0.102f, 0.102f, 0.180f, 1.0f);
+    gl->glClear(GL_COLOR_BUFFER_BIT);
 
-    m_backingStore->endPaint();
-    m_backingStore->flush(rect);
+    for (LXEBView* view : m_compositor->views()) {
+        if (!view->surface() || !view->surface()->hasContent())
+            continue;
+
+        QWaylandBufferRef buf = view->currentBuffer();
+        if (buf.isNull())
+            continue;
+
+        auto* texture = buf.toOpenGLTexture();
+        if (!texture)
+            continue;
+
+        texture->bind();
+        // TODO: fullscreen quad shader
+        texture->release();
+    }
+
+    m_glContext->swapBuffers(this);
 }
 
 void LXEBCompositorWindow::exposeEvent(QExposeEvent* event) {
@@ -35,7 +59,7 @@ void LXEBCompositorWindow::exposeEvent(QExposeEvent* event) {
 }
 
 void LXEBCompositorWindow::resizeEvent(QResizeEvent* event) {
-    m_backingStore->resize(event->size());
+    Q_UNUSED(event)
     if (isExposed())
         render();
     emit windowResized(event->size());

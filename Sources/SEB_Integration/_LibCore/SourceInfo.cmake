@@ -1,3 +1,4 @@
-CollectSources(${SEB_Submodule} ModSources)
+CollectSources(${PROJECT_MODULE_ROOT} LibCoreSources)
 
-add_library(SEB2LXEB SHARED ${ModSources})
+add_library(SEB SHARED ${LibCoreSources})
+SetTargetOutputDir(SEB "${OUTPUT_DIRECTORY_ROOT}/modules/SEB/")
