@@ -42,7 +42,7 @@ if (DEFINED APP_TARGETS_ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
 endif ()
 
 if (APP_SYSTEM_TARGET STREQUAL "Windows" OR CMAKE_SYSTEM_NAME STREQUAL "Windows" OR WIN32 OR MINGW)
-    list(APPEND OsintgramCXX_LINK_DEPS crypt32 ws2_32 advapi32 secur32)
+    list(APPEND APP_LINK_DEPS crypt32 ws2_32 advapi32 secur32)
     set(CMAKE_SYSTEM_IGNORE_PATH
             /usr/include
             /usr/local/include
@@ -62,7 +62,7 @@ if (APP_SYSTEM_TARGET STREQUAL "Windows" OR CMAKE_SYSTEM_NAME STREQUAL "Windows"
     set_property(TARGET OpenSSL::Crypto PROPERTY INTERFACE_LINK_LIBRARIES "crypt32;ws2_32")
     set_property(TARGET OpenSSL::SSL PROPERTY INTERFACE_LINK_LIBRARIES "crypt32;ws2_32")
 
-    list(APPEND OsintgramCXX_LINK_DEPS
+    list(APPEND APP_LINK_DEPS
             "-no-pthread"
             "-Wl,--undefined=clock_gettime64"
             "-Wl,--undefined=nanosleep64"

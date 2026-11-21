@@ -11,5 +11,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif ()
 
+string(TOLOWER ${CMAKE_BUILD_TYPE} bt_type)
+if (bt_type STREQUAL "release")
+    add_compile_definitions(IS_PUBLIC_BUILD=1)
+else ()
+    add_compile_definitions(IS_PUBLIC_BUILD=0)
+endif ()
+
 set(CMAKE_SKIP_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)

@@ -1,0 +1,4 @@
+#ifndef LXEB_PACKAGE_HPP
+#define LXEB_PACKAGE_HPP
+
+#endif //LXEB_PACKAGE_HPP

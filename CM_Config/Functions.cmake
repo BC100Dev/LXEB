@@ -16,6 +16,10 @@ function(CollectSources RootDir OutVar)
 endfunction()
 
 function(DisableBionicFortify TARGET_NAME)
+    if (NOT DEFINED APP_TARGETS_ANDROID)
+        return()
+    endif ()
+
     if (NOT APP_TARGETS_ANDROID)
         return()
     endif ()

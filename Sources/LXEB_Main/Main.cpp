@@ -19,11 +19,17 @@ static void signalHandler(int) {
         _exit(1);
     }
 
+    int currVt = LXEB::Lockdown::IdentifyCurrentVT();
+    bool switchBack = currVt != g_originalVT;
+
+#if IS_PUBLIC_BUILD == 1
     LXEB::Lockdown::SwitchVTLock(LXEB::Lockdown::UNLOCK);
-    if (g_originalVT != -1)
+#endif
+
+    if (g_originalVT != -1 && switchBack)
         LXEB::Lockdown::SwitchToVT(g_originalVT);
 
-    QGuiApplication::quit();
+    QApplication::quit();
 }
 
 void parse_args(int argc, char** argv) {
@@ -53,15 +59,17 @@ int main(int argc, char** argv) {
         }
     }
 
+    g_originalVT = LXEB::Lockdown::IdentifyCurrentVT();
+
+    LXEB::Lockdown::SwitchToVT(10);
     {
         std::ofstream sysrq("/proc/sys/kernel/sysrq");
         sysrq << "1";
     }
 
-    g_originalVT = LXEB::Lockdown::IdentifyCurrentVT();
-
-    LXEB::Lockdown::SwitchToVT(10);
+#if IS_PUBLIC_BUILD == 1
     LXEB::Lockdown::SwitchVTLock(LXEB::Lockdown::VTLockType::LOCK);
+#endif
 
     qputenv("QT_QPA_PLATFORM", "eglfs");
     qputenv("QT_WAYLAND_CLIENT_BUFFER_INTEGRATION", "linux-dmabuf-unstable-v1");
@@ -74,7 +82,10 @@ int main(int argc, char** argv) {
     compositor.initialize();
 
     QObject::connect(&app, &QCoreApplication::aboutToQuit, [] {
+#if IS_PUBLIC_BUILD != 0
         LXEB::Lockdown::SwitchVTLock(LXEB::Lockdown::UNLOCK);
+#endif
+
         if (g_originalVT != -1)
             LXEB::Lockdown::SwitchToVT(g_originalVT);
     });
